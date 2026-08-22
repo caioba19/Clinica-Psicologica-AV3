@@ -5,9 +5,10 @@ import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AccessibilityProvider } from './context/AccessibilityContext';
 
-// Layout
+// Layout Principal
 import { AppLayout } from './components/layout/AppLayout';
 
+// Páginas Públicas & Institucionais
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
@@ -15,6 +16,8 @@ import { ComoFuncionaPage } from './pages/public/ComoFuncionaPage';
 import { ParaPsicologosPage } from './pages/public/ParaPsicologosPage';
 import { ParaEmpresasPage } from './pages/public/ParaEmpresasPage';
 import { BlogPage } from './pages/public/BlogPage';
+
+// Páginas Internas do Sistema (Com AppLayout)
 import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { AgendaPage } from './pages/agenda/AgendaPage';
 import { PacientesListPage } from './pages/pacientes/PacientesListPage';
@@ -35,7 +38,7 @@ export const App: React.FC = () => {
         <AuthProvider>
           <ToastProvider>
             <Routes>
-              {/* Rota Raiz: Landing Page Institucional */}
+              {/* Rota Raiz: Landing Page */}
               <Route path="/" element={<LandingPage />} />
 
               {/* Rotas Públicas */}
@@ -46,7 +49,7 @@ export const App: React.FC = () => {
               <Route path="/para-empresas" element={<ParaEmpresasPage />} />
               <Route path="/blog" element={<BlogPage />} />
 
-              {/* Rotas Autenticadas com AppLayout */}
+              {/* Área Autenticada / Interna (Possui o AppLayout como invólucro) */}
               <Route element={<AppLayout />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/agenda" element={<AgendaPage />} />
@@ -56,13 +59,17 @@ export const App: React.FC = () => {
                 <Route path="/sessoes" element={<SessoesPage />} />
                 <Route path="/financeiro" element={<FinanceiroPage />} />
                 <Route path="/relatorios" element={<RelatoriosPage />} />
+                
+                {/* Rota Administrativa e atalho */}
+                <Route path="/admin" element={<Navigate to="/admin/usuarios" replace />} />
                 <Route path="/admin/usuarios" element={<AdminUsuariosPage />} />
+                
                 <Route path="/paciente/portal" element={<PacientePortalPage />} />
                 <Route path="/perfil" element={<PerfilPage />} />
                 <Route path="/configuracoes" element={<ConfiguracoesPage />} />
               </Route>
 
-              {/* Rota 404 */}
+              {/* Rota 404 para caminhos inexistentes */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </ToastProvider>

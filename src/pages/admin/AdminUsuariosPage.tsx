@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StatCard } from '../../components/common/StatCard';
-import { EmptyState } from '../../components/common/EmptyState';
 import { UsuarioSistema, PsicologoProfissional, LogAuditoria } from '../../types';
 import { useToast } from '../../context/ToastContext';
 import { maskCRP } from '../../utils/masks';
 import { adminUserService as userService } from '../../services/userService';
 import { patientService } from '../../services/patientService';
+
 export const AdminUsuariosPage: React.FC = () => {
   const { showToast, confirmAction } = useToast();
 
@@ -57,16 +57,17 @@ export const AdminUsuariosPage: React.FC = () => {
     loadData();
   }, []);
 
-  const totalAtivos = usuarios.filter((u) => u.situacao === 'Ativo').length;
-  const totalBloqueados = usuarios.filter((u) => u.situacao === 'Bloqueado').length;
+  const totalAtivos = usuarios.filter((u) => u.situacao?.toLowerCase() === 'ativo').length;
+  const totalBloqueados = usuarios.filter((u) => u.situacao?.toLowerCase() === 'bloqueado').length;
 
-  const alternarSituacao = (id: string, nome: string, situacaoAtual: 'Ativo' | 'Inativo' | 'Bloqueado') => {
-    const novaSituacao = situacaoAtual === 'Ativo' ? 'Bloqueado' : 'Ativo';
-    const acaoTexto = novaSituacao === 'Bloqueado' ? 'bloquear' : 'desbloquear/ativar';
+  const alternarSituacao = (id: string, nome: string, situacaoAtual: string) => {
+    const isAtivo = situacaoAtual?.toLowerCase() === 'Ativo';
+    const novaSituacao = isAtivo ? 'Bloqueado' : 'Ativo';
+    const acaoTexto = isAtivo ? 'bloquear' : 'desbloquear/ativar';
 
     confirmAction(`Deseja realmente ${acaoTexto} o acesso de ${nome}?`, async () => {
       try {
-        await userService.updateSituacao(id, novaSituacao); 
+        await userService.updateSituacao(id, novaSituacao);
         await loadData();
 
         const novoLog: LogAuditoria = {
@@ -76,7 +77,7 @@ export const AdminUsuariosPage: React.FC = () => {
           dataHora: 'Agora mesmo'
         };
         setLogs([novoLog, ...logs]);
-        showToast(`Situação de ${nome} alterada para ${novaSituacao}.`, 'success');
+        showToast(`Situação de ${nome} alterada com sucesso.`, 'success');
       } catch (err: any) {
         showToast('Erro ao alterar situação.', 'danger');
       }
@@ -130,24 +131,31 @@ export const AdminUsuariosPage: React.FC = () => {
   };
 
   const usuariosFiltrados = usuarios.filter((u) => {
-    return u.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    return (
+      u.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.perfil.toLowerCase().includes(searchTerm.toLowerCase());
+      u.perfil.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
   const psicologosFiltrados = psicologos.filter((p) => {
-    return p.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    return (
+      p.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.areaAtuacao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.registroCrp.toLowerCase().includes(searchTerm.toLowerCase());
+      p.registroCrp.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
-  const logsFiltrados = logs.filter((l) => {
-    const matchText = l.acao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+const logsFiltrados = logs.filter((l) => {
+    const matchText =
+      l.acao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.autor.toLowerCase().includes(searchTerm.toLowerCase());
+
     if (tipoLogFilter === 'acesso') return matchText && (l.acao.toLowerCase().includes('login') || l.acao.toLowerCase().includes('acesso'));
     if (tipoLogFilter === 'cadastro') return matchText && (l.acao.toLowerCase().includes('cadastrou') || l.acao.toLowerCase().includes('criou'));
     if (tipoLogFilter === 'prontuario') return matchText && l.acao.toLowerCase().includes('prontuário');
+
     return matchText;
   });
 
@@ -163,7 +171,6 @@ export const AdminUsuariosPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Cards de Métricas Rápidas do Administrador */}
       <div className="grid-4 mb-24">
         <StatCard
           title="Total de Usuários"
@@ -199,7 +206,6 @@ export const AdminUsuariosPage: React.FC = () => {
         />
       </div>
 
-      {/* Abas e Filtros */}
       <div className="card mb-4">
         <div className="card-body p-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
           <div className="d-flex gap-2">
@@ -251,7 +257,6 @@ export const AdminUsuariosPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Conteúdo das Abas */}
       {loading ? (
         <div className="card p-5 text-center">
           <div className="spinner-border text-primary mx-auto mb-3" role="status"></div>
@@ -302,19 +307,19 @@ export const AdminUsuariosPage: React.FC = () => {
                       </span>
                     </td>
                     <td>
-                      <span className={`badge ${u.situacao === 'Ativo' ? 'bg-success-subtle text-success border border-success' : u.situacao === 'Bloqueado' ? 'bg-danger-subtle text-danger border border-danger' : 'bg-secondary-subtle text-secondary border border-secondary'}`}>
-                        {u.situacao.toUpperCase()}
+                      <span className={`badge ${u.situacao?.toLowerCase() === 'ativo' ? 'bg-success-subtle text-success border border-success' : u.situacao?.toLowerCase() === 'bloqueado' ? 'bg-danger-subtle text-danger border border-danger' : 'bg-secondary-subtle text-secondary border border-secondary'}`}>
+                        {u.situacao ? u.situacao.toUpperCase() : 'INATIVO'}
                       </span>
                     </td>
                     <td className="text-muted small">{u.criadoEm}</td>
                     <td className="text-end">
                       <button
-                        className={`btn btn-sm ${u.situacao === 'Ativo' ? 'btn-outline-danger' : 'btn-outline-success'}`}
+                        className={`btn btn-sm ${u.situacao?.toLowerCase() === 'ativo' ? 'btn-outline-danger' : 'btn-outline-success'}`}
                         onClick={() => alternarSituacao(u.id, u.nome, u.situacao)}
-                        title={u.situacao === 'Ativo' ? 'Bloquear Acesso' : 'Desbloquear / Ativar'}
+                        title={u.situacao?.toLowerCase() === 'ativo' ? 'Bloquear Acesso' : 'Desbloquear / Ativar'}
                       >
-                        <i className={`bi ${u.situacao === 'Ativo' ? 'bi-lock-fill' : 'bi-unlock-fill'} me-1`}></i>
-                        {u.situacao === 'Ativo' ? 'Bloquear' : 'Liberar'}
+                        <i className={`bi ${u.situacao?.toLowerCase() === 'ativo' ? 'bi-lock-fill' : 'bi-unlock-fill'} me-1`}></i>
+                        {u.situacao?.toLowerCase() === 'ativo' ? 'Bloquear' : 'Liberar'}
                       </button>
                     </td>
                   </tr>
@@ -325,7 +330,6 @@ export const AdminUsuariosPage: React.FC = () => {
         </div>
       )}
 
-      {/* Aba de Psicólogos */}
       {!loading && activeTab === 'psicologos' && (
         <div className="card overflow-hidden">
           <div className="table-responsive">
@@ -350,7 +354,7 @@ export const AdminUsuariosPage: React.FC = () => {
                     <td className="text-muted">{p.email}</td>
                     <td>
                       <span className={`badge ${p.situacao === 'Ativo' ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'}`}>
-                        {p.situacao.toUpperCase()}
+                        {p.situacao ? p.situacao.toUpperCase() : 'INATIVO'}
                       </span>
                     </td>
                   </tr>
@@ -361,7 +365,6 @@ export const AdminUsuariosPage: React.FC = () => {
         </div>
       )}
 
-      {/* Aba de Logs de Auditoria */}
       {!loading && activeTab === 'logs' && (
         <div className="card overflow-hidden">
           <div className="table-responsive">
@@ -387,7 +390,6 @@ export const AdminUsuariosPage: React.FC = () => {
         </div>
       )}
 
-      {/* Modal Criar Novo Usuário */}
       {modalNovoOpen && (
         <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered">
