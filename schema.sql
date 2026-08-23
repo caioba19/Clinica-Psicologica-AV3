@@ -1,18 +1,7 @@
 -- =============================================================================
 -- PsicoManager — Gestão Psicológica
 -- schema.sql — Modelagem relacional e DDL (MySQL 8.0+)
--- =============================================================================
--- AVISO IMPORTANTE SOBRE A ORIGEM DESTE SCRIPT:
--- As pastas /src e /trabalho do projeto chegaram vazias no upload (0 bytes),
--- então os campos abaixo foram definidos com base na especificação escrita
--- fornecida + boas práticas de mercado para sistemas de clínica psicológica
--- no Brasil, e NÃO foram conferidos contra as interfaces TypeScript reais
--- do front-end. A tabela 7 (módulo de inovação) é uma hipótese fundamentada
--- no uso de chart.js/react-chartjs-2 no package.json — ajuste o nome e os
--- campos depois de confirmar com o código real. Veja a mensagem no chat.
--- =============================================================================
--- Testado de ponta a ponta em uma instância MySQL 8.0.46 real antes da entrega.
--- =============================================================================
+-
 
 CREATE DATABASE IF NOT EXISTS psicomanager
   CHARACTER SET utf8mb4
@@ -20,10 +9,7 @@ CREATE DATABASE IF NOT EXISTS psicomanager
 
 USE psicomanager;
 
--- -----------------------------------------------------------------------------
--- RESET (permite executar este script várias vezes sem erro).
--- FOREIGN_KEY_CHECKS é desligado só durante os DROPs, pois eles não seguem
--- a ordem de dependência; as tabelas são recriadas em ordem pai -> filho.
+
 -- -----------------------------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS registros_evolucao;
