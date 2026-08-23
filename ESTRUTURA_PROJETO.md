@@ -1,162 +1,218 @@
-# 📖 Guia de Arquitetura e Estrutura de Pastas — Front-End (PsicoManager)
+# 📖 Guia de Arquitetura e Estrutura de Pastas — PsicoManager
 
-Este documento detalha o propósito, a responsabilidade e o funcionamento de **cada pasta e arquivo** do front-end da aplicação. Ele serve como documentação técnica para a equipe de desenvolvimento e para a entrega acadêmica da **AV3**.
+Este documento detalha o propósito, a responsabilidade e o funcionamento de **cada pasta e módulo** da aplicação (**Front-End, Back-End em Node.js com TypeScript e Banco de Dados MySQL**). Ele serve como documentação técnica para a equipe de desenvolvimento e atende integralmente aos requisitos de documentação arquitetural da **AV3 — Projeto Integrador**.
 
 ---
 
-## 🗺️ Visão Geral da Estrutura
+## 🗺️ Visão Geral da Estrutura do Projeto
 
 ```text
 clinica-psicologica/
-├── public/                 # Arquivos estáticos servidos diretamente
-├── src/                    # Código-fonte principal da aplicação
-│   ├── components/         # Componentes de interface reutilizáveis
-│   │   ├── common/         # Blocos visuais genéricos (cards, modais, logos)
-│   │   └── layout/         # Estrutura mestra de casca visual (Sidebar, Topbar, Layout)
-│   ├── context/            # Gerenciamento de estado global (Context API)
-│   ├── pages/              # Telas e rotas da aplicação
-│   │   ├── admin/          # Painel e telas do Administrador Geral
-│   │   ├── agenda/         # Grade de horários e agendamento de consultas
-│   │   ├── auth/           # Login e recuperação de senha
-│   │   ├── configuracoes/  # Preferências do sistema e notificações
-│   │   ├── dashboard/      # Painel principal com métricas do Psicólogo
-│   │   ├── financeiro/     # Fluxo de caixa, recibos e receitas/despesas
-│   │   ├── paciente/       # Portal exclusivo de autoatendimento do Paciente
-│   │   ├── pacientes/      # Listagem, busca e cadastro (CRUD) de pacientes
-│   │   ├── perfil/         # Visualização e edição dos dados profissionais
-│   │   ├── public/         # Landing Page e páginas institucionais
-│   │   ├── relatorios/     # Estatísticas clínicas e gráficos analíticos
-│   │   └── sessoes/        # Prontuário eletrônico e evolução clínica (CFP/LGPD)
-│   ├── services/           # Camada de comunicação com API REST e persistência
-│   ├── styles/             # Folhas de estilo globais, temas e acessibilidade
-│   ├── types/              # Definições de tipos e interfaces TypeScript
-│   └── utils/              # Funções utilitárias, máscaras de formulário e validadores
-├── index.html              # Ponto de entrada HTML do Vite
-├── package.json            # Manifesto de dependências e scripts do projeto
-├── tsconfig.json           # Configurações do compilador TypeScript
-└── vite.config.ts          # Configurações de bundling e plugins do Vite
+├── public/                     # Arquivos estáticos servidos diretamente (favicon, logos)
+├── src/                        # Código-fonte principal da aplicação
+│   │
+│   ├── [ FRONT-END (React 19 + TypeScript) ]
+│   │   ├── components/         # Componentes visuais reutilizáveis
+│   │   │   ├── common/         # Blocos genéricos (StatCard, EmptyState, Logo, PrintModal)
+│   │   │   └── layout/         # Estrutura mestra (AppLayout, Sidebar, Topbar, Modais)
+│   │   ├── context/            # Gerenciamento de estado global (Auth, Toast, Theme, Acessibilidade)
+│   │   ├── pages/              # Telas e rotas da aplicação
+│   │   │   ├── admin/          # Painel e telas do Administrador Geral
+│   │   │   ├── agenda/         # Grade de horários e agendamento de consultas
+│   │   │   ├── auth/           # Login e recuperação de senha
+│   │   │   ├── configuracoes/  # Preferências do sistema e notificações
+│   │   │   ├── dashboard/      # Painel principal do Psicólogo com métricas clínicas
+│   │   │   ├── financeiro/     # Fluxo de caixa, recibos e receitas/despesas
+│   │   │   ├── paciente/       # Portal exclusivo de autoatendimento do Paciente
+│   │   │   ├── pacientes/      # Listagem, busca e cadastro (CRUD) de pacientes
+│   │   │   ├── perfil/         # Visualização e edição dos dados profissionais
+│   │   │   ├── public/         # Landing Page e páginas institucionais
+│   │   │   ├── relatorios/     # Estatísticas clínicas e gráficos analíticos (Chart.js)
+│   │   │   └── sessoes/        # Prontuário eletrônico e evolução clínica (Inovação / CFP / LGPD)
+│   │   ├── services/           # Camada de comunicação do front-end com a API REST
+│   │   ├── styles/             # Folhas de estilo globais, temas (Dark/Light) e acessibilidade
+│   │   ├── utils/              # Validadores de CPF real, formato de e-mail e máscaras de input
+│   │   ├── App.tsx             # Componente raiz do React e definição das rotas
+│   │   └── main.tsx            # Ponto de entrada do React no DOM
+│   │
+│   ├── [ BACK-END (Node.js + Express + TypeScript) ]
+│   │   ├── server.ts           # Ponto de inicialização do servidor HTTP (Porta 3001)
+│   │   ├── app.ts              # Configuração do Express, CORS, JSON parser e registro de rotas
+│   │   ├── routes/             # Definição das rotas e endpoints REST da API
+│   │   │   ├── authRoutes.JS   # Endpoints de autenticação (/api/auth/login) e usuários
+│   │   │   ├── patientRoutes.ts# Endpoints de pacientes (/api/patients)
+│   │   │   └── sessionRoutes.ts# Endpoints de sessões e prontuários (/api/sessions)
+│   │   ├── controllers/        # Controladores que tratam requisições HTTP (req, res)
+│   │   │   ├── authController.ts
+│   │   │   ├── patientController.ts
+│   │   │   └── sessionController.ts
+│   │   ├── services/           # Regras de negócio e lógica de aplicação do back-end
+│   │   │   ├── NodeAuthService.ts
+│   │   │   ├── NodePatientService.ts
+│   │   │   └── NodeSessionService.ts
+│   │   └── repositories/       # Camada de acesso a dados (Data Access Layer)
+│   │       ├── UserRepository.ts
+│   │       ├── PatientRepository.ts
+│   │       └── SessionRepository.ts
+│   │
+│   └── [ TIPAGEM E CONFIGURAÇÕES COMPARTILHADAS ]
+│       ├── types/              # Interfaces e tipagens TypeScript centralizadas
+│       └── vite-env.d.ts       # Declarações de ambiente do Vite
+│
+├── trabalho/                   # Documentos oficiais da disciplina e edital da AV3
+│   ├── AV3-UJ.docx             # Documento Word oficial com diretrizes e critérios
+│   └── conteudo.txt            # Transcrição integral das regras e requisitos
+│
+├── index.html                  # Template HTML base com tipografia e viewport
+├── package.json                # Manifesto de dependências e scripts (dev, build, preview)
+├── tsconfig.json               # Configurações do compilador TypeScript
+└── vite.config.ts              # Configurações do Vite e plugins do React
 ```
 
 ---
 
-## 📂 Detalhamento de Cada Pasta e sua Função
+## 🏗️ Arquitetura em Camadas do Back-End (Node.js + TypeScript)
 
-### 1. `public/`
-- **Função:** Armazena arquivos estáticos que não passam pelo processo de compilação do JavaScript/TypeScript.
-- **Arquivos:**
-  - `favicon.svg`: Ícone da clínica exibido na aba do navegador.
-
----
-
-### 2. `src/components/` (Componentes Visuais)
-Agrupa componentes reutilizáveis para garantir padronização visual e reaproveitamento de código (princípio DRY).
-
-#### `src/components/common/` (Componentes Genéricos)
-- **`EmptyState.tsx`:** Exibe uma ilustração/ícone amigável com mensagem quando uma lista está vazia ou nenhum resultado de busca é encontrado.
-- **`Logo.tsx`:** Componente vetorizado da marca *PsicoManager* em diferentes tamanhos e temas.
-- **`PrintModal.tsx`:** Modal preparado para impressão/geração de PDF de laudos, recibos e declarações de comparecimento (`@media print`).
-- **`StatCard.tsx`:** Card visual de métricas (ex: "Pacientes Ativos", "Faturamento", "Consultas Hoje") com ícone, cor e variação percentual.
-
-#### `src/components/layout/` (Estrutura de Layout)
-- **`AppLayout.tsx`:** Layout mestre compartilhado por todas as rotas autenticadas. Combina a barra superior (`Topbar`), o menu lateral (`Sidebar`), o conteúdo da página ativa (`<Outlet />`) e modais globais.
-- **`Sidebar.tsx`:** Menu lateral retrátil e dinâmico. Adapta as opções de menu automaticamente conforme o perfil logado (*Psicólogo*, *Administrador* ou *Paciente*).
-- **`Topbar.tsx`:** Barra superior que exibe o usuário logado, botão de tema (*Light/Dark*), atalho de acessibilidade e notificações.
-- **`AccessibilityModal.tsx`:** Painel de acessibilidade que permite ao usuário aumentar/diminuir fonte, ativar alto contraste e modo leitura.
-- **`QuickActionModal.tsx`:** Modal de ações rápidas (novo agendamento, novo paciente, registrar evolução) acionável via atalho.
-
----
-
-### 3. `src/context/` (Estado Global da Aplicação)
-Gerencia dados compartilhados entre múltiplas telas sem necessidade de repassar propriedades manualmente (*Prop Drilling*).
-
-- **`AuthContext.tsx`:** Controla a sessão do usuário logado, dados do perfil, permissões e funções de `login`, `logout` e `loginAs` (simulação de papéis).
-- **`ToastContext.tsx`:** Sistema de notificações flutuantes na tela (*sucesso, erro, alerta, info*) e modal de confirmação para ações destrutivas (ex: inativar cadastro).
-- **`ThemeContext.tsx`:** Alterna entre os modos **Claro (Light)** e **Escuro (Dark)**, persistindo a escolha no navegador.
-- **`AccessibilityContext.tsx`:** Gerencia as configurações de acessibilidade (tamanho da fonte, contraste, espaçamento).
-
----
-
-### 4. `src/pages/` (Páginas e Telas da Aplicação)
-Contém as telas roteadas pela aplicação (`react-router-dom`).
-
-- **`admin/AdminUsuariosPage.tsx`:** Painel do Administrador Geral. Lista todos os usuários por situação (*ativo, inativo, bloqueado*), permite criar novos logins, alterar perfis e consultar logs de auditoria.
-- **`agenda/AgendaPage.tsx`:** Visualização da agenda semanal/diária com separação por horários, salas de atendimento e modalidade (*Presencial vs. Online*).
-- **`auth/LoginPage.tsx`:** Tela de login responsiva com autenticação por e-mail/senha, alternância de perfil e acesso rápido para demonstração.
-- **`auth/ForgotPasswordPage.tsx`:** Fluxo de recuperação de senha e redefinição de acesso.
-- **`dashboard/DashboardPage.tsx`:** Visão geral do Psicólogo com indicadores do dia, próximas consultas agendadas e lista de tarefas clínicas.
-- **`financeiro/FinanceiroPage.tsx`:** Fluxo financeiro com extrato de receitas/despesas, saldo líquido, categorias de pagamento (PIX, Cartão) e emissão de recibos.
-- **`paciente/PacientePortalPage.tsx`:** Portal exclusivo para o paciente consultar suas próximas sessões, acessar links de teleconsulta e registrar tarefas de casa.
-- **`pacientes/PacientesListPage.tsx`:** Lista completa de pacientes em modo Tabela/Cards com busca, filtros de status, modal de prontuário rápido e **exportação em CSV**.
-- **`pacientes/PacienteFormPage.tsx`:** Formulário completo de cadastro e edição de paciente, com validação de CPF real, máscaras automáticas e dados de prontuário.
-- **`perfil/PerfilPage.tsx`:** Visualização e edição das informações profissionais do psicólogo (nome, CRP, abordagem clínica, bio).
-- **`public/LandingPage.tsx`:** Página inicial institucional com proposta de valor, apresentação dos recursos e depoimentos.
-- **`public/ComoFuncionaPage.tsx`:** Explicação passo a passo sobre a operação da plataforma para clínicas.
-- **`public/ParaPsicologosPage.tsx`:** Página com tabela comparativa destacando os benefícios do sistema contra métodos manuais/planilhas.
-- **`public/ParaEmpresasPage.tsx`:** Apresentação da solução para planos de saúde mental corporativa e RH.
-- **`public/BlogPage.tsx`:** Artigos e materiais educativos sobre gestão clínica e Psicologia.
-- **`relatorios/RelatoriosPage.tsx`:** Relatórios analíticos com gráficos (*Chart.js*) de volumetria de sessões e queixas/diagnósticos mais frequentes.
-- **`sessoes/SessoesPage.tsx`:** Prontuário eletrônico completo, anamnese, evolução de atendimentos por sessão, escala de humor (1 a 10) e emissão de declarações.
-- **`configuracoes/ConfiguracoesPage.tsx`:** Configurações gerais da conta, preferências de notificação e segurança.
-- **`NotFoundPage.tsx`:** Tela 404 amigável para rotas inexistentes.
-
----
-
-### 5. `src/services/` (Camada de Integração e Persistência)
-Camada desacoplada responsável pelas requisições HTTP e sincronização de dados:
-
-- **`api.ts`:** Cliente HTTP base com envio automático de cabeçalho `Authorization: Bearer <token>`, tratamento de status HTTP e integração com a URL base da API (`VITE_API_URL`).
-- **`patientService.ts`:** Métodos para listar (`getAll`), buscar (`getById`), criar (`create`), atualizar (`update`) e inativar (`inactivate`) pacientes.
-- **`userService.ts`:** Métodos de administração para listar usuários, alterar situação (*ativo/bloqueado*) e atualizar perfis de acesso.
-- **`sessionService.ts`:** Métodos para buscar histórico de prontuário por paciente e registrar novas notas de evolução clínica.
-
----
-
-### 6. `src/utils/` (Utilitários e Validações)
-- **`masks.ts`:** Funções para formatação automática em tempo de digitação (CPF: `000.000.000-00`, Telefone: `(00) 00000-0000`, CEP: `00000-000`, CRP: `CRP 00/000000`, Moeda: `R$ 0,00`).
-- **`validators.ts`:** Algoritmos de validação estrita:
-  - `isValidCPF(cpf)`: Cálculo matemático dos dois dígitos verificadores do CPF brasileiro;
-  - `isValidEmail(email)`: Validação de estrutura de e-mail;
-  - `isValidPhone(phone)`: Verificação de DDD e quantidade de dígitos.
-
----
-
-### 7. `src/types/` (Tipagem TypeScript)
-- **`index.ts`:** Interfaces centrais do sistema (`UsuarioSistema`, `PerfilUsuario`, `SituacaoConta`, `PsicologoProfissional`, `Paciente`, `Sessao`, `LancamentoFinanceiro`, `LogAuditoria`). Garante consistência de dados e autocompletion em todo o código.
-
----
-
-### 8. `src/styles/` (Estilização e Temas)
-- **`style.css`:** Variáveis CSS globais (`--primary`, `--accent`, `--bg-sidebar`, `--radius-lg`, etc.), tipografia e grid responsivo.
-- **`polish.css`:** Animações de entrada (`fadeInUp`), scrollbars personalizadas, estilos de acessibilidade e regras de impressão A4 (`@media print`).
-- **`custom-react.css`:** Adaptações complementares para componentes dinâmicos do React.
-
----
-
-### 9. Arquivos da Raiz do Projeto
-- **`src/App.tsx`:** Componente raiz que agrupa os `Providers` de contexto e define todas as rotas da aplicação (`<Routes>` e `<Route>`).
-- **`src/main.tsx`:** Ponto de entrada do React 19 que renderiza o `App` no elemento `#root` com o `BrowserRouter`.
-- **`src/vite-env.d.ts`:** Declaração de tipos para variáveis de ambiente (`ImportMetaEnv`) e importações de ativos (CSS/SVG/PNG).
-- **`index.html`:** Documento HTML inicial com as fontes do Google Fonts (*Plus Jakarta Sans*, *Playfair Display*, *Inter*) e o contêiner da aplicação.
-- **`package.json`:** Gerencia dependências (`react`, `react-router-dom`, `chart.js`, `bootstrap`, `bootstrap-icons`) e scripts de execução (`dev`, `build`, `preview`).
-- **`tsconfig.json`:** Configuração do compilador TypeScript (ES2020, JSX react-jsx, checagem de tipos).
-- **`vite.config.ts`:** Configuração do bundler Vite com plugin oficial do React.
-- **`.gitignore`:** Instruções ao Git para ignorar `node_modules/`, `dist/`, logs e arquivos de configuração local (`.env.local`, `.vscode/`).
-- **`README.md`:** Documentação principal do projeto voltada para a execução e apresentação da AV3.
-
----
-
-## 🔄 Fluxo de Funcionamento (Ciclo de Vida da Aplicação)
+O back-end segue o padrão de arquitetura em camadas para isolar responsabilidades e facilitar testes e manutenção:
 
 ```
-[ Usuário ] ──> [ Tela / Formulário (src/pages/) ]
-                      │
-                      ├──> Validações (src/utils/validators.ts & masks.ts)
-                      │
-                      ├──> Contextos Globais (src/context/ - Auth / Toast / Theme)
-                      │
-                      └──> Camada de Serviços (src/services/)
-                                │
-                                ├── [ Standalone / Demo ]: Sincroniza via localStorage
-                                │
-                                └── [ Com Back-end Ativo ]: Chamada HTTP REST (VITE_API_URL) ──> Back-end TypeScript ──> MySQL
+[ Cliente / Front-end React ]
+             │ (Requisição HTTP JSON)
+             ▼
+[ Routes (src/routes/) ] ──────────► Valida a rota e encaminha para o Controller
+             │
+             ▼
+[ Controllers (src/controllers/) ] ─► Extrai parâmetros (body, params, query) e valida HTTP
+             │
+             ▼
+[ Services (src/services/) ] ──────► Executa regras de negócio, validações e hashes de segurança
+             │
+             ▼
+[ Repositories (src/repositories/) ]► Executa consultas e persistência (MySQL)
+             │
+             ▼
+[ Banco de Dados MySQL ]
 ```
+
+### 1. `src/server.ts` e `src/app.ts`
+- **`server.ts`**: Ponto de entrada do servidor Node.js. Inicializa o serviço na porta configurada (padrão `3001`) via `app.listen()`.
+- **`app.ts`**: Cria a instância da aplicação Express, aplica middlewares globais (`cors()`, `express.json()`), registra o healthcheck (`/api/health`) e anexa os roteadores da API.
+
+### 2. `src/routes/` (Roteamento REST)
+Define as URLs e métodos HTTP (`GET`, `POST`, `PATCH`, `DELETE`) de cada recurso:
+- **`authRoutes.JS`**: Rotas de autenticação (`/api/auth/login`, `/api/auth/logout`) e usuários administrativos (`/api/users`).
+- **`patientRoutes.ts`**: Rotas do CRUD de pacientes (`/api/patients`, `/api/patients/:id`).
+- **`sessionRoutes.ts`**: Rotas para prontuários, agendamentos e notas de evolução clínica (`/api/sessions`).
+
+### 3. `src/controllers/` (Controladores HTTP)
+Responsáveis por receber a requisição (`Request`), invocar a camada de serviço correspondente e retornar a resposta HTTP formatada (`Response` com status `200`, `201`, `400`, `401`, `500`):
+- **`authController.ts`**: Processa requisições de login e listagem de usuários.
+- **`patientController.ts`**: Processa criação, consulta, busca por CPF e atualização de pacientes.
+- **`sessionController.ts`**: Processa agendamentos e registros de prontuário eletrônico.
+
+### 4. `src/services/` (Regras de Negócio do Back-End)
+Contém a lógica de negócio independente de framework web:
+- **`NodeAuthService.ts`**: Valida credenciais de login, verifica se a conta está com status ativo e emite o token de autorização.
+- **`NodePatientService.ts`**: Valida duplicidade de CPF, formata campos obrigatórios e aplica regras de associação de pacientes.
+- **`NodeSessionService.ts`**: Controla horários de atendimento e histórico de sessões.
+
+### 5. `src/repositories/` (Acesso a Dados)
+Abstrai as operações de persistência:
+- **`UserRepository.ts`**: Métodos `findByEmail`, `findAll`, `create`, `updateSituacao`.
+- **`PatientRepository.ts`**: Métodos `findAll`, `findById`, `findByCpf`, `create`, `update`.
+- **`SessionRepository.ts`**: Métodos `findAll`, `findByPatientId`, `create`.
+
+---
+
+## 🎨 Detalhamento do Front-End (React + TypeScript)
+
+### 1. `src/components/` (Componentes Visuais)
+- **`common/EmptyState.tsx`**: Ilustração e mensagem amigável para listas vazias ou buscas sem resultados.
+- **`common/Logo.tsx`**: Marca visual vetorizada do *PsicoManager*.
+- **`common/PrintModal.tsx`**: Layout otimizado para impressão A4 e exportação em PDF (`@media print`) de laudos, recibos e declarações de comparecimento.
+- **`common/StatCard.tsx`**: Cards com indicadores visuais, variação percentual e ícones personalizáveis.
+- **`layout/AppLayout.tsx`**: Casca mestra das telas autenticadas com `Sidebar`, `Topbar` e `<Outlet />`.
+- **`layout/Sidebar.tsx`**: Menu lateral dinâmico que adapta as opções conforme o perfil logado (*Psicólogo*, *Administrador* ou *Paciente*).
+- **`layout/Topbar.tsx`**: Barra superior com dados do usuário, botão de alternância de tema (*Light/Dark*) e atalho de acessibilidade.
+- **`layout/AccessibilityModal.tsx`**: Modal com controle de tamanho de fonte, alto contraste e modo leitura.
+- **`layout/QuickActionModal.tsx`**: Menu rápido para novas ações no sistema (novo agendamento, novo paciente, etc.).
+
+### 2. `src/context/` (Estado Global da Aplicação)
+- **`AuthContext.tsx`**: Mantém a sessão do usuário logado, permissões e função de simulação rápida de perfil (`loginAs`).
+- **`ToastContext.tsx`**: Notificações flutuantes (*sucesso, erro, alerta, info*) e modal de confirmação para ações críticas.
+- **`ThemeContext.tsx`**: Alternância persistente entre modo Claro e modo Escuro.
+- **`AccessibilityContext.tsx`**: Controle de acessibilidade conforme diretrizes WCAG 2.1 AA.
+
+### 3. `src/pages/` (Telas e Rotas)
+- **`admin/AdminUsuariosPage.tsx`**: Painel do Administrador com contadores, listagem de usuários por situação (*ativo, inativo, bloqueado*), alteração de perfil e logs de auditoria.
+- **`agenda/AgendaPage.tsx`**: Grade de horários e salas de atendimento com distinção entre consultas presenciais e teleconsultas.
+- **`auth/LoginPage.tsx`**: Formulário de autenticação com e-mail e senha.
+- **`auth/ForgotPasswordPage.tsx`**: Fluxo de recuperação de senha.
+- **`dashboard/DashboardPage.tsx`**: Dashboard clínico com métricas de pacientes, próximas consultas e tarefas do dia.
+- **`financeiro/FinanceiroPage.tsx`**: Gestão financeira, controle de fluxo de caixa e emissão de recibos.
+- **`paciente/PacientePortalPage.tsx`**: Portal de autoatendimento exclusivo do paciente.
+- **`pacientes/PacientesListPage.tsx`**: Listagem com busca em tempo real, filtros por status, visualização em tabela/cards e **exportação em CSV**.
+- **`pacientes/PacienteFormPage.tsx`**: Cadastro/edição de paciente com validação real de CPF (dígitos verificadores) e máscaras dinâmicas.
+- **`perfil/PerfilPage.tsx`**: Edição dos dados profissionais do psicólogo (CRP, especialidade, abordagem).
+- **`public/`**: Telas institucionais (`LandingPage.tsx`, `ComoFuncionaPage.tsx`, `ParaPsicologosPage.tsx`, `ParaEmpresasPage.tsx`, `BlogPage.tsx`).
+- **`relatorios/RelatoriosPage.tsx`**: Gráficos estatísticos clínicos via *Chart.js*.
+- **`sessoes/SessoesPage.tsx`**: Módulo de inovação com prontuário eletrônico, histórico de anamnese, evolução de atendimentos e escala de humor (1 a 10).
+
+### 4. `src/services/` (Consumo de API no Front-End)
+- **`api.ts`**: Cliente HTTP (`fetch`) padronizado com tratamento de erros e injeção automática de token JWT (`Authorization: Bearer <token>`).
+- **`patientService.ts`**: Consome os endpoints `/api/patients`.
+- **`userService.ts`**: Consome os endpoints `/api/users`.
+- **`sessionService.ts`**: Consome os endpoints `/api/sessions`.
+
+### 5. `src/utils/` (Utilitários e Validações)
+- **`validators.ts`**: Algoritmo matemático para cálculo dos dois dígitos verificadores do CPF (`isValidCPF`), validação estrita de e-mail e telefone.
+- **`masks.ts`**: Máscaras automáticas em tempo real para CPF, Telefone, CEP, Moeda e CRP.
+
+---
+
+## 🗄️ Modelo de Dados Relacional (MySQL)
+
+Em conformidade com a seção 8 do edital da AV3, o banco de dados é estruturado nas seguintes tabelas relacionais:
+
+| Tabela | Finalidade | Campos Principais |
+| :--- | :--- | :--- |
+| **`perfis`** | Cadastro dos perfis de acesso do sistema | `id`, `nome` (*administrador, psicologo, paciente*), `descricao` |
+| **`usuarios`** | Credenciais e dados de acesso | `id`, `nome`, `email`, `senha_hash`, `perfil_id` (FK), `situacao` (*Ativo, Inativo, Bloqueado*), `criado_em` |
+| **`psicologos`** | Dados profissionais do psicólogo | `id`, `usuario_id` (FK), `crp`, `especialidade`, `area_atuacao`, `bio` |
+| **`clientes_pacientes`**| Dados cadastrais e clínicos do paciente | `id`, `nome`, `email`, `telefone`, `cpf`, `data_nasc`, `genero`, `status`, `convenio` |
+| **`vinculos`** | Associação entre psicólogo e paciente | `id`, `psicologo_id` (FK), `paciente_id` (FK), `data_vinculo`, `ativo` |
+| **`logs_acoes`** | Registro de auditoria administrativa | `id`, `usuario_id` (FK), `acao`, `entidade`, `detalhes`, `data_hora` |
+| **`sessoes_prontuario`**| Prontuário, evolução e módulo inovador | `id`, `paciente_id` (FK), `psicologo_id` (FK), `data_hora`, `tipo`, `escala_humor`, `relato_evolucao` |
+
+---
+
+## 🚀 Ciclo Completo de Execução da Aplicação
+
+```text
+[ Usuário ] 
+     │
+     ▼
+[ Front-End React 19 / TypeScript (Vite) ]
+     │ (Valida formulários, CPF, máscaras e temas)
+     │ (Dispara requisição HTTP REST)
+     ▼
+[ Back-End Node.js / TypeScript (Express - Porta 3001) ]
+     │ (Roteia em src/routes/ e valida em src/controllers/)
+     │ (Aplica regras de negócio e hash de segurança em src/services/)
+     │ (Executa operações SQL em src/repositories/)
+     ▼
+[ Banco de Dados Relacional MySQL ]
+     (Armazena dados com integridade referencial, PKs e FKs)
+```
+
+---
+
+## 📋 Checklist de Conformidade Técnica — AV3
+
+- [x] **Front-End Responsivo em TypeScript e React 19**;
+- [x] **Back-End estruturado em Node.js com TypeScript** (Rotas, Controllers, Services, Repositories);
+- [x] **API REST documentada** com suporte a autenticação, usuários, pacientes e prontuários;
+- [x] **Funcionalidade de Inovação implementada** (Prontuário com Escala de Humor e Emissão de Documentos);
+- [x] **Acessibilidade e Usabilidade WCAG 2.1 AA** (Tema Dark/Light, alto contraste e ajuste de fontes);
+- [x] **Validações estritas de segurança no front-end** (Dígitos verificadores do CPF, máscaras e higienização de inputs);
+- [x] **Documentação arquitetural completa e atualizada**.
