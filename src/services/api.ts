@@ -1,5 +1,4 @@
-// Cliente de API Centralizado para Integração Front-end <-> Back-end
-// Desenvolvido de acordo com as rotas REST do edital AV3
+
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
