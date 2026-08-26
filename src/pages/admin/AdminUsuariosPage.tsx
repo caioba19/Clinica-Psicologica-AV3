@@ -5,6 +5,8 @@ import { useToast } from '../../context/ToastContext';
 import { maskCRP } from '../../utils/masks';
 import { adminUserService as userService } from '../../services/userService';
 import { patientService } from '../../services/patientService';
+import { psychologistService } from '../../services/psychologistService';
+import { auditLogService } from '../../services/auditLogService';
 
 export const AdminUsuariosPage: React.FC = () => {
   const { showToast, confirmAction } = useToast();
@@ -41,13 +43,19 @@ export const AdminUsuariosPage: React.FC = () => {
     try {
       setLoading(true);
       const [usersData, patientsData] = await Promise.all([
-        userService.getAll(),
-        patientService.getAll()
+        userService.getAll().catch(() => []),
+        patientService.getAll().catch(() => [])
       ]);
-      setUsuarios(usersData);
-      setTotalPacientesCount(patientsData.length);
+      if (usersData.length > 0) setUsuarios(usersData);
+      if (patientsData.length > 0) setTotalPacientesCount(patientsData.length);
+
+      const psiData = await psychologistService.getAll().catch(() => []);
+      if (psiData.length > 0) setPsicologos(psiData);
+
+      const logsData = await auditLogService.getAll().catch(() => []);
+      if (logsData.length > 0) setLogs(logsData);
     } catch (err: any) {
-      showToast('Erro ao carregar usuários.', 'danger');
+      showToast('Erro ao carregar dados do painel.', 'danger');
     } finally {
       setLoading(false);
     }
@@ -61,7 +69,7 @@ export const AdminUsuariosPage: React.FC = () => {
   const totalBloqueados = usuarios.filter((u) => u.situacao?.toLowerCase() === 'bloqueado').length;
 
   const alternarSituacao = (id: string, nome: string, situacaoAtual: string) => {
-    const isAtivo = situacaoAtual?.toLowerCase() === 'Ativo';
+    const isAtivo = situacaoAtual?.toLowerCase() === 'ativo';
     const novaSituacao = isAtivo ? 'Bloqueado' : 'Ativo';
     const acaoTexto = isAtivo ? 'bloquear' : 'desbloquear/ativar';
 
@@ -99,16 +107,27 @@ export const AdminUsuariosPage: React.FC = () => {
       });
 
       if (novoPerfil === 'psicologo') {
-        const novoPsi: PsicologoProfissional = {
-          id: 'p' + (psicologos.length + 1),
-          usuarioId: newUser.id,
-          nome: novoNome,
-          email: novoEmail,
-          areaAtuacao: novaArea,
-          registroCrp: novoCrp || 'CRP 06/99999',
-          situacao: 'Ativo'
-        };
-        setPsicologos([...psicologos, novoPsi]);
+        try {
+          const novoPsi = await psychologistService.create({
+            usuarioId: newUser.id,
+            nome: novoNome,
+            email: novoEmail,
+            areaAtuacao: novaArea,
+            registroCrp: novoCrp || 'CRP 06/99999'
+          });
+          setPsicologos([novoPsi, ...psicologos]);
+        } catch {
+          const fallbackPsi: PsicologoProfissional = {
+            id: 'p' + (psicologos.length + 1),
+            usuarioId: newUser.id,
+            nome: novoNome,
+            email: novoEmail,
+            areaAtuacao: novaArea,
+            registroCrp: novoCrp || 'CRP 06/99999',
+            situacao: 'Ativo'
+          };
+          setPsicologos([fallbackPsi, ...psicologos]);
+        }
       }
 
       const novoLog: LogAuditoria = {

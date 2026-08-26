@@ -1,14 +1,8 @@
-import 'dotenv/config'
-import express from 'express';
-// ... outras importações
+import 'dotenv/config';
+import { app } from './expressApp';
 
-const app = express();
+const PORT = process.env.PORT || 3001;
 
-// Rota base para teste e healthcheck
-app.get('/', (req, res) => {
-  res.json({
-    message: 'API da Clínica Psicológica está online e rodando!',
-    version: '1.0.0',
-    status: 'OK'
-  });
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor HTTP rodando na porta ${PORT}`);
 });
