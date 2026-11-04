@@ -192,10 +192,15 @@ Pendências de código e da entrega acadêmica estão organizadas em [docs/READM
 
 ## 👥 Equipe de Desenvolvimento
 
-| Integrante | Atuação Principal |
-| :--- | :--- |
-| **Caio** | Desenvolvimento Front-end, UI/UX, Componentes React, Integração com API REST e Validações |
-| *(Outros integrantes)* | Back-end Node.js, Modelagem e Implementação do Banco MySQL, Documentação e Vídeo Pitch |
+> Projeto desenvolvido por alunos do Centro Universitário Jorge Amado (Unijorge) como Avaliação AV3 — Projeto Integrador.
+
+| Integrante | GitHub / Git | Atuação Principal |
+| :--- | :--- | :--- |
+| **Caio Vinicius Santos da Costa Leite** | `caioba19` | Liderança de Front-end & Interface — criação do repositório, estruturação das páginas públicas e da aplicação, design responsivo, identidade visual (logo/favicons), componentes React, integração com API REST e validações de formulário |
+| **Kauan Marinho de Depósito** | `kauanmsx` | Integração Full-Stack & Tipagem — unificação dos scripts de execução simultânea (`front + back`), tipagem TypeScript estrita entre API e cliente, implementação inicial de rotas de usuários e autenticação |
+| **Maicon Diaz** | `Maicon Diaz` | Modelagem de Banco de Dados MySQL & Recuperação de Senha — criação do schema relacional (`database/schema.sql`), chaves estrangeiras, seed de dados, implementação do fluxo completo de recuperação de senha por e-mail com tokens seguros e lembretes automáticos de sessão |
+| **Daniel Oliveira Silva** | `Dn071` | Segurança & Criptografia do Back-end — implementação das rotas de segurança na API, hash de senhas com bcrypt, proteção de dados sensíveis e políticas de autorização por perfil |
+| **Gabriel Nascimento Luz** | `gaab-lz` | Arquitetura, Fluxos & Documentação AV3 — reestruturação modular do projeto (`backend/`, `frontend/`, `database/`, `docs/`), elaboração do DER, dicionário de dados e documentação de entrega |
 
 ---
 
