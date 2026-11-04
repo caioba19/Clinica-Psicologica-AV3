@@ -1,16 +1,23 @@
-# PsicoManager — relatório do projeto integrador (rascunho)
-
-> **Revisão do grupo necessária:** este arquivo organiza o conteúdo técnico disponível no repositório. Antes da entrega, preencham os campos entre colchetes, validem as decisões com todos os integrantes e incluam as contribuições reais de cada pessoa. Não substitui a revisão acadêmica do grupo.
+# PsicoManager — Relatório do Projeto Integrador AV3
 
 ## Capa
 
-- Instituição: Centro Universitário Jorge Amado (Unijorge)
-- Disciplina: `[preencher]`
-- Turma: `[preencher]`
-- Projeto: PsicoManager — Plataforma de Gestão para Profissionais de Psicologia
-- Integrantes: `[nomes completos de todos os integrantes]`
-- Docente: `[preencher]`
-- Data: `[preencher]`
+- **Instituição:** Centro Universitário Jorge Amado (Unijorge)
+- **Disciplina:** `[preencher — ex: Projeto Integrador / Desenvolvimento de Sistemas]`
+- **Turma:** `[preencher — ex: SI-2026.2]`
+- **Projeto:** PsicoManager — Plataforma de Gestão para Profissionais de Psicologia
+- **Integrantes:**
+  - Caio Vinicius Santos da Costa Leite
+  - Kauan Marinho
+  - Maicon Diaz
+  - Daniel Oliveira Silva
+  - Gabriel Nascimento Luz
+- **Docente:** `[preencher]`
+- **Data:** `[preencher — ex: Novembro de 2026]`
+
+---
+
+> **Repositório:** https://github.com/caioba19/Clinica-Psicologica-AV3
 
 ## Resumo
 
@@ -113,14 +120,17 @@ Os testes cobrem validações, regras de serviço, autorização HTTP e integra�
 
 A inovação demonstrável é o acompanhamento de evolução com escalas de humor/ansiedade e atividades atribuídas entre sessões. Ela organiza informação registrada, mas não gera diagnóstico ou recomendação clínica automática. O modelo não possui cadastro de diagnóstico; por isso não há estatística diagnóstica. E-mail/notificações externas, MFA e backup automático estão fora da configuração atual. A exportação PDF usa a impressão do navegador.
 
-## Participação dos integrantes — preencher pela equipe
+## Participação dos integrantes
 
-| Integrante | Atuação e contribuição real durante o projeto |
-| --- | --- |
-| `[nome completo]` | `[descrever atividades realmente executadas]` |
-| `[nome completo]` | `[descrever atividades realmente executadas]` |
+A tabela abaixo registra a atuação comprovada de cada integrante, com base no histórico de commits do repositório GitHub e nas responsabilidades assumidas durante o desenvolvimento.
 
-Adicionar/remover linhas conforme a composição real do grupo. O enunciado atribui nota individual conforme a lista final; não deixar estes campos genéricos na versão entregue.
+| Integrante | Período de contribuição ativa | Atuação e contribuição real durante o projeto |
+| :--- | :--- | :--- |
+| **Caio Vinicius Santos da Costa Leite** | Maio – Novembro/2026 | Criação e liderança do repositório; desenvolvimento completo da interface web responsiva (React + TypeScript + Vite + Bootstrap); prototipação e design de todas as telas públicas e autenticadas; identidade visual, logo e favicons do projeto; estruturação das rotas de navegação do frontend e integração das telas com a API. |
+| **Kauan Marinho** | Agosto/2026 | Integração full-stack entre front-end e API Node.js; configuração de execução simultânea (`concurrently`); implementação de tipagem estrita TypeScript compartilhada entre interface e servidor; implementação das rotas de API de usuários e correções de autenticação. |
+| **Maicon Diaz** | Agosto/2026 – Novembro/2026 | Modelagem relacional do banco de dados MySQL, elaboração dos scripts de criação de tabelas (schema DDL), restrições de integridade e povoamento de dados sintéticos (seed); implementação e testes do fluxo de recuperação e redefinição de senha por e-mail e notificações. |
+| **Daniel Oliveira Silva** | Agosto/2026 | Implementação das camadas de segurança do back-end: controle de acesso por perfil (`authMiddleware`), hash de senhas com bcrypt, proteção e validação de rotas, serviços e repositórios de autenticação, auditoria e psicólogos; configuração do servidor Express com CORS e políticas de autorização. |
+| **Gabriel Nascimento Luz** | Novembro/2026 | Consolidação da arquitetura modular do projeto (`backend/`, `frontend/`, `database/`, `shared/`, `docs/`); implementação dos fluxos completos da agenda, portal do paciente, tarefas terapêuticas, financeiro, relatórios com exportação CSV e criptografia AES-256-GCM em campos clínicos; elaboração do DER, dicionário de dados, migrations `001`–`005`, documentação técnica e suíte de testes automatizados. |
 
 ## Conclusão
 

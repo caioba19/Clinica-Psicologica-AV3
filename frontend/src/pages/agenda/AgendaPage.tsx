@@ -225,7 +225,7 @@ export const AgendaPage: React.FC = () => {
                       >
                         {h}
                       </div>
-                      <div style={{ flex: 1, padding: '8px 12px', background: evs.length ? 'rgba(92,184,168,0.03)' : '#fff' }}>
+                      <div style={{ flex: 1, padding: '8px 12px', background: evs.length ? 'rgba(92,184,168,0.06)' : 'transparent' }}>
                         {evs.map((ev) => (
                           <div
                             key={ev.id}
@@ -263,7 +263,7 @@ export const AgendaPage: React.FC = () => {
                               <div>
                                 <strong style={{ fontSize: '13px', display: 'block', color: 'var(--text-main)' }}>{ev.paciente}</strong>
                                 <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
-                                  {ev.tipo} • <span className="badge bg-light text-dark border">{ev.sala}</span>
+                                  {ev.tipo} • <span className="badge" style={{ background: 'var(--bg-hover, rgba(0,0,0,0.08))', color: 'var(--text-main)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 6px' }}>{ev.sala}</span>
                                 </span>
                               </div>
                             </div>

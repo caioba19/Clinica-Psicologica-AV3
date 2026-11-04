@@ -55,25 +55,42 @@
 }
 
 /* Campos da tela de login - manter claros e transparentes mesmo no modo escuro */
-.login-input-field,
-.login-input-field input,
-input.bg-transparent,
+/* Usar especificidade máxima para sobrescrever qualquer dark-mode */
+body .login-input-field,
+body .login-input-field input,
+body input.bg-transparent,
+body[data-theme="dark"] .login-input-field,
+body[data-theme="dark"] .login-input-field input,
+body[data-theme="dark"] input.bg-transparent,
+[data-theme="dark"] body .login-input-field,
 [data-theme="dark"] .login-input-field,
 [data-theme="dark"] .login-input-field input,
 [data-theme="dark"] input.bg-transparent {
   background-color: transparent !important;
+  background: transparent !important;
   color: #17262b !important;
+  -webkit-text-fill-color: #17262b !important;
 }
 
+/* Autofill - evitar que Chrome/Edge aplique fundo escuro */
 .login-input-field input:-webkit-autofill,
 .login-input-field input:-webkit-autofill:hover, 
 .login-input-field input:-webkit-autofill:focus,
-.login-input-field input:-webkit-autofill:active,
-[data-theme="dark"] .login-input-field input:-webkit-autofill {
+.login-input-field input:-webkit-autofill:active {
   -webkit-text-fill-color: #17262b !important;
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
   box-shadow: 0 0 0 1000px #ffffff inset !important;
-  transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+[data-theme="dark"] .login-input-field input:-webkit-autofill,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:hover,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:focus,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #17262b !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
 }
 
 [data-theme="dark"] .input-group-text {
@@ -175,4 +192,22 @@ html[data-high-contrast="true"] .badge {
 *:focus-visible {
   outline: 3px solid #2c5f6e !important;
   outline-offset: 2px !important;
+}
+
+/* ============================================================
+   NOTIFICAÇÕES DROPDOWN - Dark Mode
+   ============================================================ */
+[data-theme="dark"] .notification-unread-bg {
+  background-color: #1a2e3a !important;
+}
+
+[data-theme="dark"] .badge.bg-light {
+  background-color: #2b393f !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Agenda grid - garantir fundo transparente em dark mode */
+[data-theme="dark"] .agenda-grid-cell {
+  background: transparent !important;
 }

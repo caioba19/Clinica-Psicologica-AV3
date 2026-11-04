@@ -12,7 +12,7 @@ import { NodeSessionService } from '../backend/src/services/NodeSessionService';
 
 process.env.JWT_SECRET ||= 'test-secret-only-not-for-production-32-chars-minimum';
 
-describe('ValidaÃ§Ã£o de evoluÃ§Ãµes clÃ­nicas', () => {
+describe('Validação de evoluções clínicas', () => {
   it('rejeita escalas fora do intervalo de 0 a 10', async () => {
     const sessionService = new NodeSessionService({} as any);
     await assert.rejects(

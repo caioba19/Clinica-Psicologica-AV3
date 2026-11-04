@@ -4,7 +4,7 @@ import { isDbConnected } from '../database/db';
 import { LoginRateLimitRepository } from '../repositories/LoginRateLimitRepository';
 
 const windowMs = 15 * 60 * 1000;
-const maxAttempts = 10;
+const maxAttempts = 100;
 const attempts = new Map<string, { count: number; resetAt: number }>();
 const repository = new LoginRateLimitRepository();
 

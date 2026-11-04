@@ -769,13 +769,35 @@ textarea:focus {
   transform: translateY(0);
 }
 
-.app-toast.success { border-left-color: var(--success); }
-.app-toast.error { border-left-color: var(--danger); }
-.app-toast.warning { border-left-color: var(--warning); }
-.app-toast.info { border-left-color: var(--info); }
+.app-toast.success { 
+  border-left-color: var(--success); 
+  color: #155724 !important;
+  background-color: #f4faf6 !important;
+}
+.app-toast.error, .app-toast.danger { 
+  border-left-color: #dc3545 !important; 
+  color: #721c24 !important;
+  background-color: #fdf2f2 !important;
+}
+.app-toast.warning { 
+  border-left-color: #ffc107 !important; 
+  color: #856404 !important;
+  background-color: #fffdf5 !important;
+}
+.app-toast.info { 
+  border-left-color: #17a2b8 !important; 
+  color: #0c5460 !important;
+  background-color: #f4f9fb !important;
+}
+
+.app-toast span {
+  font-weight: 600;
+  color: inherit;
+}
 
 .app-toast i {
   margin-top: 1px;
+  font-size: 16px;
 }
 
 #scrollProgress {

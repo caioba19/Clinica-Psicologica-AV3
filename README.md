@@ -80,11 +80,11 @@ O sistema reúne ferramentas de gestão clínica em desenvolvimento. A conformid
 
 Em uma base nova, execute `database/schema.sql`. Para preencher a base descartável de demonstração, execute também `database/seed.sql`; esse arquivo limpa as tabelas antes de inserir os dados fictícios.
 
-Em um banco existente, aplique as migrations `database/migrations/001` a `005` em ordem. Não execute o seed em uma base que contenha dados a preservar.
+Em um banco existente, aplique as migrations `database/migrations/001` a `006` em ordem. Não execute o seed em uma base que contenha dados a preservar.
 
 ### 2. Configurar o arquivo `.env`:
 
-Copie `.env.example` para `.env` e configure o MySQL. Gere um `JWT_SECRET` aleatório (mínimo 32 caracteres) e uma `CLINICAL_DATA_KEY` com 64 dígitos hexadecimais. Use chaves próprias para cada ambiente e guarde a chave clínica: sem ela, registros clínicos cifrados não podem ser lidos. `EMAIL_API_KEY` e `EMAIL_FROM` são opcionais até habilitar recuperação de senha por e-mail.
+Copie `.env.example` para `.env` e configure o MySQL. Gere um `JWT_SECRET` aleatório (mínimo 32 caracteres) e uma `CLINICAL_DATA_KEY` com 64 dígitos hexadecimais. Use chaves próprias para cada ambiente e guarde a chave clínica: sem ela, registros clínicos cifrados não podem ser lidos. Para recuperação de senha e lembretes, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `SMTP_FROM`. O servidor usa TLS automaticamente na porta 465; para outras portas, defina `SMTP_SECURE=true` apenas quando o provedor exigir TLS direto. Mantenha `.env` fora do Git. Lembretes são enviados ao e-mail do paciente quando `notifEmail` e `notifLembrete` estão ativados nas preferências do psicólogo, respeitando `lembreteHoras`.
 
 ```env
 PORT=3001
@@ -98,8 +98,12 @@ DB_USER=root
 DB_PASSWORD=
 DB_NAME=psicomanager
 APP_BASE_URL=http://localhost:3000
-# EMAIL_API_KEY= (opcional)
-# EMAIL_FROM= (opcional)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=<usuário SMTP>
+SMTP_PASS=<senha SMTP>
+SMTP_FROM=<remetente aprovado pelo provedor>
 ```
 ### 3. Instalar Dependências e Executar:
 ```bash

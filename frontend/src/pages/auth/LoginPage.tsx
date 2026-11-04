@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
 export const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('dra.sofia@psicomanager.com.br');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -311,14 +311,17 @@ export const LoginPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
                     style={{
                       flex: 1,
                       border: 'none',
                       outline: 'none',
                       background: 'transparent',
+                      backgroundColor: 'transparent',
                       fontSize: '14px',
                       color: '#17262b',
-                      padding: 0
+                      padding: 0,
+                      WebkitTextFillColor: '#17262b'
                     }}
                   />
                 </div>
@@ -349,14 +352,17 @@ export const LoginPage: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="current-password"
                     style={{
                       flex: 1,
                       border: 'none',
                       outline: 'none',
                       background: 'transparent',
+                      backgroundColor: 'transparent',
                       fontSize: '14px',
                       color: '#17262b',
-                      padding: 0
+                      padding: 0,
+                      WebkitTextFillColor: '#17262b'
                     }}
                   />
                   <button

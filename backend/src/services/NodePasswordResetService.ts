@@ -15,7 +15,7 @@ export class NodePasswordResetService {
   ) {}
 
   async request(email: string): Promise<void> {
-    if (!this.email.isConfigured()) throw new Error('A recuperaÃ§Ã£o por e-mail nÃ£o estÃ¡ configurada.');
+    if (!this.email.isConfigured()) throw new Error('A recuperação por e-mail não está configurada.');
     const account = await this.users.findByEmail(email.trim().toLowerCase());
     if (!account) return;
 
@@ -37,12 +37,12 @@ export class NodePasswordResetService {
 
   async reset(email: string, token: string, password: string): Promise<void> {
     if (password.length < 8) throw new Error('A nova senha deve ter pelo menos 8 caracteres.');
-    if (token.length < 40 || token.length > 100) throw new Error('Link de redefiniÃ§Ã£o invÃ¡lido ou expirado.');
+    if (token.length < 40 || token.length > 100) throw new Error('Link de redefinição inválido ou expirado.');
     const tokenHash = createHash('sha256').update(token).digest('hex');
     const passwordHash = await bcrypt.hash(password, 12);
     const userId = await this.resets.complete(email.trim().toLowerCase(), tokenHash, passwordHash);
-    if (!userId) throw new Error('Link de redefiniÃ§Ã£o invÃ¡lido ou expirado.');
-    if (!(await this.users.findById(userId))) throw new Error('Link de redefiniÃ§Ã£o invÃ¡lido ou expirado.');
+    if (!userId) throw new Error('Link de redefinição inválido ou expirado.');
+    if (!(await this.users.findById(userId))) throw new Error('Link de redefinição inválido ou expirado.');
     // The repository updates the hash atomically when connected; keep test/offline storage in sync too.
     if (!isDbConnected()) await this.users.updatePassword(userId, passwordHash);
   }

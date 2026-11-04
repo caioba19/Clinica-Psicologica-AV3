@@ -130,8 +130,13 @@ export class NodeAuthService {
     const senhaHash = await bcrypt.hash(data.senha, 12);
 
     return await this.userRepository.create({
-      ...data,
-      senhaHash
+      nome: data.nome!.trim(),
+      email: data.email!.trim().toLowerCase(),
+      perfil: data.perfil!,
+      situacao: data.situacao ?? 'Ativo',
+      senhaHash,
+      crp: data.registroCrp?.trim(),
+      areaAtuacao: data.areaAtuacao?.trim()
     });
   }
 

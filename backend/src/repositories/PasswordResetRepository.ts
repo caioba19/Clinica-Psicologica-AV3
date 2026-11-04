@@ -18,9 +18,11 @@ export class PasswordResetRepository {
           [userId]
         );
         await connection.execute(
-          'INSERT INTO password_reset_tokens (token_hash, id_usuario, expires_at) VALUES (?, ?, ?)',
-          [tokenHash, userId, expiresAt]
+          `INSERT INTO password_reset_tokens (token_hash, id_usuario, expires_at)
+           VALUES (?, ?, DATE_ADD(UTC_TIMESTAMP(), INTERVAL 30 MINUTE))`,
+          [tokenHash, userId]
         );
+        console.log('[PasswordReset] Token salvo no banco para userId:', userId, '| hash:', tokenHash.substring(0, 16) + '...');
       });
       return;
     }
@@ -30,6 +32,7 @@ export class PasswordResetRepository {
   async complete(email: string, tokenHash: string, passwordHash: string): Promise<string | null> {
     if (isDbConnected()) {
       return withTransaction(async (connection) => {
+        console.log('[PasswordReset] Buscando token hash:', tokenHash.substring(0, 16) + '...');
         const [rows] = await connection.execute<any[]>(
           `SELECT pr.id_usuario FROM password_reset_tokens pr
            JOIN usuarios u ON u.id_usuario = pr.id_usuario
@@ -38,6 +41,7 @@ export class PasswordResetRepository {
            FOR UPDATE`,
           [tokenHash, email]
         );
+        console.log('[PasswordReset] Tokens encontrados:', rows.length);
         if (!rows.length) return null;
         const userId = String(rows[0].id_usuario);
         await connection.execute('UPDATE usuarios SET senha_hash = ? WHERE id_usuario = ?', [passwordHash, userId]);
@@ -45,7 +49,12 @@ export class PasswordResetRepository {
           'UPDATE password_reset_tokens SET used_at = UTC_TIMESTAMP() WHERE id_usuario = ? AND used_at IS NULL',
           [userId]
         );
-        await connection.execute('UPDATE tokens_revogados SET expira_em = UTC_TIMESTAMP() WHERE id_usuario = ?', [userId]);
+        try {
+          await connection.execute('UPDATE tokens_revogados SET expira_em = UTC_TIMESTAMP() WHERE id_usuario = ?', [userId]);
+        } catch (e: any) {
+          console.warn('[PasswordReset] tokens_revogados update ignorado:', e.message);
+        }
+        console.log('[PasswordReset] Senha atualizada para userId:', userId);
         return userId;
       });
     }

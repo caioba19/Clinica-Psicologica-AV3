@@ -43,15 +43,15 @@ INSERT INTO perfis (id_perfil, nome_perfil, descricao) VALUES
 INSERT INTO usuarios
   (id_usuario, nome_completo, login, email, senha_hash, telefone, id_perfil, status, ultimo_login_em)
 VALUES
-  (1, 'Renata Farias',        'admin.renata',     'admin@clinica.com',
+  (1, 'Maicon Dias',        'admin.Maicon',     'maicons4nto@gmail.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71988887777', 1, 'ativo',   '2026-08-18 09:12:00'),
-  (2, 'Dra. Sofia Mendes',        'sofia.mendes',     'dra.sofia@psicomanager.com.br',
+  (2, 'Caio Vinicius',        'caio.vinicius',     'caiov19.2015@gmail.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71988886611', 2, 'ativo',   '2026-08-18 08:47:00'),
-  (3, 'Juliana Prado Lima',       'juliana.lima',     'juliana.lima@psicomanager.com.br',
+  (3, 'Daniel Oliveira',       'daniel.oliveira',     'danieloliveirasilva1905@gmail.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71988885522', 2, 'ativo',   '2026-08-17 15:30:00'),
-  (4, 'Marcos Vinícius Andrade',  'marcos.andrade',   'marcos.andrade@email.com',
+  (4, 'Kauan Marinho',  'Kauan.marinho',   'kauanmarinhodeposito178@gmail.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71999991111', 3, 'ativo',   '2026-08-16 19:05:00'),
-  (5, 'Fernanda Cristina Ribeiro','fernanda.ribeiro', 'fernanda.ribeiro@email.com',
+  (5, 'Gabriel nascimento','gabriel.nascimento', 'nascimentoluzg@gmail.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71999992222', 3, 'ativo',   '2026-08-15 11:22:00'),
   (6, 'Bruno Henrique Tavares',   'bruno.tavares',    'bruno.tavares@email.com',
       '$2b$10$Xs468oUNd.riYkdJAn/Y.OK0Dyw3ZsxbfAdtuisK756qPmeAy4RW6', '71999993333', 3, 'ativo',   NULL),
