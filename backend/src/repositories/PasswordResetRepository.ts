@@ -14,12 +14,20 @@ export class PasswordResetRepository {
     if (isDbConnected()) {
       await withTransaction(async (connection) => {
         await connection.execute(
+<<<<<<< HEAD
           'UPDATE password_reset_tokens SET used_at = NOW() WHERE id_usuario = ? AND used_at IS NULL',
+=======
+          'UPDATE password_reset_tokens SET used_at = UTC_TIMESTAMP() WHERE id_usuario = ? AND used_at IS NULL',
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901
           [userId]
         );
         await connection.execute(
           `INSERT INTO password_reset_tokens (token_hash, id_usuario, expires_at)
+<<<<<<< HEAD
            VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))`,
+=======
+           VALUES (?, ?, DATE_ADD(UTC_TIMESTAMP(), INTERVAL 30 MINUTE))`,
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901
           [tokenHash, userId]
         );
         console.log('[PasswordReset] Token salvo no banco para userId:', userId, '| hash:', tokenHash.substring(0, 16) + '...');
@@ -37,7 +45,11 @@ export class PasswordResetRepository {
           `SELECT pr.id_usuario FROM password_reset_tokens pr
            JOIN usuarios u ON u.id_usuario = pr.id_usuario
            WHERE pr.token_hash = ? AND LOWER(u.email) = LOWER(?)
+<<<<<<< HEAD
              AND pr.used_at IS NULL AND pr.expires_at > NOW()
+=======
+             AND pr.used_at IS NULL AND pr.expires_at > UTC_TIMESTAMP()
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901
            FOR UPDATE`,
           [tokenHash, email]
         );
@@ -46,11 +58,19 @@ export class PasswordResetRepository {
         const userId = String(rows[0].id_usuario);
         await connection.execute('UPDATE usuarios SET senha_hash = ? WHERE id_usuario = ?', [passwordHash, userId]);
         await connection.execute(
+<<<<<<< HEAD
           'UPDATE password_reset_tokens SET used_at = NOW() WHERE id_usuario = ? AND used_at IS NULL',
           [userId]
         );
         try {
           await connection.execute('UPDATE tokens_revogados SET expira_em = NOW() WHERE id_usuario = ?', [userId]);
+=======
+          'UPDATE password_reset_tokens SET used_at = UTC_TIMESTAMP() WHERE id_usuario = ? AND used_at IS NULL',
+          [userId]
+        );
+        try {
+          await connection.execute('UPDATE tokens_revogados SET expira_em = UTC_TIMESTAMP() WHERE id_usuario = ?', [userId]);
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901
         } catch (e: any) {
           console.warn('[PasswordReset] tokens_revogados update ignorado:', e.message);
         }
@@ -66,10 +86,18 @@ export class PasswordResetRepository {
 
   async invalidate(tokenHash: string): Promise<void> {
     if (isDbConnected()) {
+<<<<<<< HEAD
       await executeQuery('UPDATE password_reset_tokens SET used_at = NOW() WHERE token_hash = ?', [tokenHash]);
+=======
+      await executeQuery('UPDATE password_reset_tokens SET used_at = UTC_TIMESTAMP() WHERE token_hash = ?', [tokenHash]);
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901
       return;
     }
     const reset = inMemoryTokens.get(tokenHash);
     if (reset) reset.used = true;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 860848a606997b1bf77f3f7068b682a01fe4d901

@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { authenticateToken, requireRole } from '../middlewares/authMiddleware';
+import { TherapyTaskController } from '../controllers/therapyTaskController';
+import { TherapyTaskRepository } from '../repositories/TherapyTaskRepository';
+const routes = Router();
+const controller = new TherapyTaskController(new TherapyTaskRepository());
+routes.get('/tasks/my', authenticateToken, requireRole(['paciente']), controller.list);
+routes.patch('/tasks/:id/completion', authenticateToken, requireRole(['paciente']), controller.update);
+routes.get('/tasks', authenticateToken, requireRole(['administrador', 'psicologo']), controller.listForProfessional);
+routes.post('/tasks', authenticateToken, requireRole(['administrador', 'psicologo']), controller.create);
+routes.delete('/tasks/:id', authenticateToken, requireRole(['administrador', 'psicologo']), controller.delete);
+export { routes as therapyTaskRoutes };
