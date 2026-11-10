@@ -1,0 +1,213 @@
+/* Variáveis de Tema Escuro */
+[data-theme="dark"], body.dark-theme {
+  --bg-main: #12181b;
+  --bg-card: #1b2428;
+  --bg-sidebar: #0f1c21;
+  --text-primary: #e6edf0;
+  --text-secondary: #9cb1b8;
+  --text-muted: #748c94;
+  --border: #2b393f;
+  background-color: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .modal-box,
+[data-theme="dark"] .topbar,
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .page-title,
+[data-theme="dark"] .modal-title {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .table thead th {
+  background-color: #151d21 !important;
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .table td,
+[data-theme="dark"] .table th {
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #151d21 !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Campos da tela de login - manter claros e transparentes mesmo no modo escuro */
+/* Usar especificidade máxima para sobrescrever qualquer dark-mode */
+body .login-input-field,
+body .login-input-field input,
+body input.bg-transparent,
+body[data-theme="dark"] .login-input-field,
+body[data-theme="dark"] .login-input-field input,
+body[data-theme="dark"] input.bg-transparent,
+[data-theme="dark"] body .login-input-field,
+[data-theme="dark"] .login-input-field,
+[data-theme="dark"] .login-input-field input,
+[data-theme="dark"] input.bg-transparent {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: #17262b !important;
+  -webkit-text-fill-color: #17262b !important;
+}
+
+/* Autofill - evitar que Chrome/Edge aplique fundo escuro */
+.login-input-field input:-webkit-autofill,
+.login-input-field input:-webkit-autofill:hover, 
+.login-input-field input:-webkit-autofill:focus,
+.login-input-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #17262b !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+[data-theme="dark"] .login-input-field input:-webkit-autofill,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:hover,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:focus,
+[data-theme="dark"] .login-input-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #17262b !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+[data-theme="dark"] .input-group-text {
+  background-color: #151d21 !important;
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .btn-ghost,
+[data-theme="dark"] .action-btn,
+[data-theme="dark"] .topbar-btn {
+  background-color: #151d21 !important;
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: #151d21 !important;
+}
+
+[data-theme="dark"] .topbar-search {
+  background-color: #151d21 !important;
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .topbar-search input {
+  color: var(--text-primary) !important;
+}
+
+/* Transições suaves */
+body, .card, .topbar, .sidebar, .modal-box {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+/* ============================================================
+   RECURSOS DE ACESSIBILIDADE (WCAG 2.1)
+   ============================================================ */
+
+/* 1. Escalas de Fonte para Baixa Visão */
+html[data-font-size="large"] {
+  font-size: 115% !important;
+}
+
+html[data-font-size="xlarge"] {
+  font-size: 130% !important;
+}
+
+/* 2. Modo de Alto Contraste (High Contrast) */
+html[data-high-contrast="true"], body.high-contrast {
+  --bg-main: #ffffff !important;
+  --bg-card: #ffffff !important;
+  --bg-sidebar: #000000 !important;
+  --text-primary: #000000 !important;
+  --text-secondary: #000000 !important;
+  --text-muted: #1a1a1a !important;
+  --border: #000000 !important;
+  --primary: #003366 !important;
+  --accent: #006655 !important;
+}
+
+html[data-high-contrast="true"] .card,
+html[data-high-contrast="true"] .stat-card,
+html[data-high-contrast="true"] .modal-box,
+html[data-high-contrast="true"] .table,
+html[data-high-contrast="true"] input,
+html[data-high-contrast="true"] select,
+html[data-high-contrast="true"] textarea {
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+}
+
+html[data-high-contrast="true"] .badge {
+  border: 1.5px solid #000000 !important;
+  font-weight: 900 !important;
+  color: #000000 !important;
+}
+
+/* 3. Link Acessível de Salto (Skip to content) */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 10px;
+  background: #2c5f6e;
+  color: #ffffff;
+  padding: 10px 16px;
+  z-index: 9999;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
+/* 4. Foco por Teclado Visível e Acessível (:focus-visible) */
+*:focus-visible {
+  outline: 3px solid #2c5f6e !important;
+  outline-offset: 2px !important;
+}
+
+/* ============================================================
+   NOTIFICAÇÕES DROPDOWN - Dark Mode
+   ============================================================ */
+[data-theme="dark"] .notification-unread-bg {
+  background-color: #1a2e3a !important;
+}
+
+[data-theme="dark"] .badge.bg-light {
+  background-color: #2b393f !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Agenda grid - garantir fundo transparente em dark mode */
+[data-theme="dark"] .agenda-grid-cell {
+  background: transparent !important;
+}
